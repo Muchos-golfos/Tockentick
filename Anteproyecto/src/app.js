@@ -13,7 +13,9 @@ const Comment = require('./models/Comment');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173'
+}));
 app.use(express.json());
 
 // Servir archivos estáticos (ajustado a la ruta src/uploads si es necesario)
