@@ -1,0 +1,54 @@
+/* Importar tipografía profesional */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Paleta basada en el Logo "TokenTick" */
+  --tt-gold-primary: #C7A17A;       /* Dorado Champagne Principal */
+  --tt-gold-light: #F4E8DB;         /* Dorado muy claro (fondos) */
+  --tt-gold-dark: #A5805B;          /* Dorado oscuro (hover) */
+  --tt-text-main: #2D2D2D;          /* Gris Pizarra Oscuro (Texto) */
+  --tt-text-sub: #604C3D;           /* Beige Oscuro (Subtítulos, como en logo) */
+  --tt-bg-light: #FAFAFA;           /* Fondo general limpio */
+  --tt-bg-accent: #F0F0F0;          /* Fondo tarjetas/secciones */
+  --tt-white: #FFFFFF;
+  --tt-border: #E0E0E0;
+
+  /* Estados de Ticket (adaptados a paleta) */
+  --tt-state-open: #4285F4;         /* Azul (L1/Abierto) */
+  --tt-state-progress: #C7A17A;     /* Dorado (L2/TIC) */
+  --tt-state-resolved: #34A853;     /* Verde */
+  --tt-state-critical: #EA4335;     /* Rojo (L3/Admins) */
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--tt-bg-light);
+  color: var(--tt-text-main);
+  overflow-x: hidden;
+}
+
+/* Botones con degradado dorado inspirado en el logo */
+.btn-gold {
+  background: linear-gradient(135deg, #C7A17A 0%, #E8D3C0 50%, #C7A17A 100%);
+  color: #fff;
+  border: 1px solid #B5936E;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+.btn-gold:hover {
+  background: linear-gradient(135deg, #A5805B 0%, #C7A17A 50%, #A5805B 100%);
+  color: #fff;
+}
+
+/* Tarjetas y Paneles Minimalistas */
+.tt-card {
+  background-color: var(--tt-white);
+  border: 1px solid var(--tt-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.text-gold { color: var(--tt-gold-primary); }
+.text-sub { color: var(--tt-text-sub); }
