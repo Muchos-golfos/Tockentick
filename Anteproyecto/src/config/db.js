@@ -1,23 +1,22 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-// Configuración de la conexión utilizando las variables de entorno
 const sequelize = new Sequelize(
-    process.env.DB_NAME, // tokentick
-    process.env.DB_USER, // root
-    process.env.DB_PASS, // tu contraseña
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASS,
     {
-        host: process.env.DB_HOST, // localhost
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT || 3306,  // ✅ Puerto añadido
         dialect: 'mysql',
-        logging: false, // Cambiar a console.log si quieres ver las consultas SQL en la terminal
+        logging: false,
         define: {
-            timestamps: true, // Esto gestiona automáticamente created_at y updated_at
-            underscored: true // Para que coincida con el formato snake_case de tu SQL
+            timestamps: true,
+            underscored: true
         }
     }
 );
 
-// Función para probar la conexión
 const testConnection = async () => {
     try {
         await sequelize.authenticate();
