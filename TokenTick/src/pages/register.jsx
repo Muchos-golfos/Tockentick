@@ -6,6 +6,7 @@ const Register = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -15,6 +16,7 @@ const Register = () => {
       [name]: value
     }));
     setError(''); // Limpiar error cuando el usuario empieza a escribir
+    setSuccess('');
   };
 
   const handleSubmit = async (e) => {
@@ -26,21 +28,45 @@ const Register = () => {
       return;
     }
 
+    // Validar que la contraseña tenga al menos 6 caracteres
+    if (formData.password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres');
+      return;
+    }
+
     setLoading(true);
     setError('');
+    setSuccess('');
 
     try {
       const response = await api.post('/auth/register', formData);
       console.log('Registro exitoso:', response.data);
-      alert('¡Usuario registrado con éxito!');
-      navigate('/login');
+      
+      // Mostrar mensaje de éxito
+      setSuccess('¡Usuario registrado con éxito! Redirigiendo al login...');
+      
+      // Esperar 2 segundos antes de redirigir
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+      
     } catch (err) {
       console.error('Error en registro:', err);
       
-      // Mostrar el mensaje específico del Backend
-      const errorMessage = err.response?.data?.message || 'Error al registrarse. Revisa los datos.';
+      // Obtener el mensaje de error específico del Backend
+      let errorMessage = 'Error al registrarse. Intenta de nuevo.';
+      
+      if (err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err.response?.status === 400) {
+        errorMessage = 'El email ya está registrado o los datos son inválidos';
+      } else if (err.response?.status === 500) {
+        errorMessage = 'Error del servidor. Intenta más tarde.';
+      } else if (err.message === 'Network Error') {
+        errorMessage = 'Error de conexión. Verifica tu conexión a internet.';
+      }
+      
       setError(errorMessage);
-      alert(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -54,8 +80,15 @@ const Register = () => {
           
           {error && (
             <div className="alert alert-danger alert-dismissible fade show" role="alert">
-              {error}
+              <strong>Error:</strong> {error}
               <button type="button" className="btn-close" onClick={() => setError('')}></button>
+            </div>
+          )}
+
+          {success && (
+            <div className="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>¡Éxito!</strong> {success}
+              <button type="button" className="btn-close" onClick={() => setSuccess('')}></button>
             </div>
           )}
           
@@ -70,6 +103,7 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="Tu nombre completo"
                 required 
+                disabled={loading}
               />
             </div>
             <div className="mb-3">
@@ -82,6 +116,7 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="tu@email.com"
                 required 
+                disabled={loading}
               />
             </div>
             <div className="mb-3">
@@ -94,6 +129,7 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="Mínimo 6 caracteres"
                 required 
+                disabled={loading}
               />
             </div>
             <button 
